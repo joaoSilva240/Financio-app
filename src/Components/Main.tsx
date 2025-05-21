@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react'
+
 import Conta from './Conta';
 import Modal from './Modal';
+
+
 
 type EstruturaDaConta={
   conta:string;
@@ -9,6 +12,7 @@ type EstruturaDaConta={
 }
 
 export default function Main() {
+    
     const [Contas, setContas]=useState<EstruturaDaConta[]>([]);
     const [adicionarNomeContaNova,setAdicionarNomeContaNova]=useState<string>();
     const [adicionarValorContaNova,setAdicionarValorContaNova]=useState<number>();

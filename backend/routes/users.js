@@ -1,6 +1,7 @@
 import express from 'express';
 const router = express.Router();
-import supabase from '@supabase/supabase-js'
+import supabase from '../supabaseClient.js'
+
 
 // GET /users
 router.get('/', async (req, res) => {
@@ -15,11 +16,11 @@ router.get('/', async (req, res) => {
 
 // POST /users
 router.post('/', async (req, res) => {
-  const { name, email } = req.body;
+  const { nome, email,senha } = req.body;
 
   const { data, error } = await supabase
     .from('users')
-    .insert([{ name, email }])
+    .insert([{ nome, email,senha }])
     .select();
 
   if (error) return res.status(500).json({ error: error.message });
