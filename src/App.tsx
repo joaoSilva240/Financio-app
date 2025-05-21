@@ -10,10 +10,9 @@ type EstruturaDaConta={
 }
 
 export default function App() {
-  const [Contas, setContas]=useState<EstruturaDaConta[]>([
-    {conta:"Banco Inter",valor:1800,cor:"#434343"}
-  
-  ]);
+  const [Contas, setContas]=useState<EstruturaDaConta[]>([]);
+  const [adicionarNomeContaNova,setAdicionarNomeContaNova]=useState<string>();
+  const [adicionarValorContaNova,setAdicionarValorContaNova]=useState<number>();
   const [ValorTotal,setValorTotal]=useState<number>(0);
   const [modal,setModal] = useState(false);
 
@@ -23,17 +22,14 @@ export default function App() {
   },[Contas])
   
   function handleAddConta(){
-    
-    
-    
-    
-    
-    // const novaConta:EstruturaDaConta={
-    //   conta:"Nova Conta",
-    //   valor:1000,
-    //   cor:"#"+Math.floor(Math.random()*16777215).toString(16)
-    // };
-    // setContas([novaConta,...Contas]);
+    if(!adicionarNomeContaNova || !adicionarValorContaNova) return
+    const novaConta:EstruturaDaConta={
+      conta:adicionarNomeContaNova,
+      valor:adicionarValorContaNova,
+      cor:"#"+Math.floor(Math.random()*16777215).toString(16)
+    };
+    setContas([novaConta,...Contas]);
+    setModal(false)
   };
 
   return (
@@ -44,11 +40,12 @@ export default function App() {
       <button onClick={()=>setModal(true)} className='mb-5 p-5 rounded-xl bg-white text-black'>Adicionar mais contas</button>
       <Modal isOpen={modal} onClose={() => setModal(false)}>
           <h2 className="text-3xl font-bold mb-4">Adicione os dados da conta</h2>
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-3 gap-2">
           <p>Nome da conta</p>
-          <input className='h-10 pl-5 pr-5 border rounded-sm' type="text" name="conta" id="conta" placeholder='Adicione os dados da conta'/>
+          <input className=' col-span-2 h-10 pl-5 pr-5 border rounded-sm' type="text" name="conta" id="conta" placeholder='Adicione os dados da conta' value={adicionarNomeContaNova} onChange={(e)=>setAdicionarNomeContaNova(e.target.value)}/>
           <p>Valor da conta</p>
-          <input className='h-10 pl-5 pr-5 border rounded-sm' type="text" name="valor" id="valor" placeholder='Adicione o saldo da conta'/>
+          <input className='h-10 col-span-2 pl-5 pr-5 border rounded-sm' type="number" name="valor" id="valor" placeholder='Adicione o saldo da conta'value={adicionarValorContaNova} onChange={(e)=>setAdicionarValorContaNova(parseFloat(e.target.value))}/>
+      <button onClick={()=>handleAddConta()} className=' col-span-3 mb-5 p-3 border rounded-xl bg-white text-black'>Adicionar Conta</button>
         </div>
       </Modal>
      <div className="p-5 w-full h-fit grid grid-cols-2 rounded-xl gap-5 h-2/4 bg-gray-900">
