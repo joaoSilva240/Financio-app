@@ -1,6 +1,6 @@
 import express from 'express';
 const router = express.Router();
-import supabase from '../supabaseClient.ts'
+import supabase from '../supabaseClient.js'
 
 
 // GET /users

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import supabase from '../../backend/supabaseClient.js'
+import { supabase } from '../supabaseClient.ts'
 
 import Conta from './Conta';
 import Modal from './Modal';

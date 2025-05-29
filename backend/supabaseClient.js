@@ -1,11 +1,9 @@
+// Ensure SUPABASE_URL and SUPABASE_ANON_KEY in your .env file match your Supabase project settings.
 import { createClient } from '@supabase/supabase-js';
 
-import dotenv from 'dotenv' 
 
 
-dotenv.config();
 
-
-const supabase = createClient(process.env.DATABASE_URL,process.env.DATABASE_PASSWORD_TOKEN);
+const supabase = createClient(process.env.SUPABASE_URL,process.env.SUPABASE_ANON_KEY);
 
 export default supabase;
