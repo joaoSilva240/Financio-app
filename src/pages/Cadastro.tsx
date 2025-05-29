@@ -1,5 +1,6 @@
 import supabase from '../../backend/supabaseClient'
 import { useState } from 'react';
+import {Link} from "react-router-dom"
 
 type Usuario={
     nome:string;
@@ -52,6 +53,9 @@ return(
           onChange={(e) => setFormulario({ ...formulario, senha: e.target.value })}
         />
         <button className='h-10 rounded-3xl text-white font-bold bg-blue-400' type="submit">Cadastrar</button>
+        <p className="flex flex-col items-center">Possui conta? <br />
+          <Link to={"/"}><strong className="text-blue-600">Logar</strong></Link>
+        </p>
       </form>
     </>
 );
