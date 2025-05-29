@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import supabase from '../../backend/supabaseClient'
 
 import Conta from './Conta';
 import Modal from './Modal';
@@ -18,6 +19,55 @@ export default function Main() {
     const [adicionarValorContaNova,setAdicionarValorContaNova]=useState<number>();
     const [ValorTotal,setValorTotal]=useState<number>(0);
     const [modal,setModal] = useState(false);
+
+    const [fetcheData, setFetcheData] = useState<EstruturaDaConta[]>([])
+
+
+  useEffect(()=>{
+
+
+    async function getUser(): Promise<String | null> {
+        const {data:{user},error} = await supabase.auth.getUser()
+        if(error){
+          console.log(error.message)
+          return null
+        }
+        return user ? user.id:null
+      
+    }
+  
+    async function getUserAccounts(userId:String){
+      try{
+        const {data:AccountData,error} = await supabase
+        .from('contas')
+        .select('*')
+        .eq('user_id',userId)
+  
+        if(error){
+          console.error("Erro na busca dos dados da conta")
+          setFetcheData([])
+          return null
+        }
+        const mappAccountData:EstruturaDaConta[] = AccountData.map(account =>({
+          id: account.id,
+          conta:account.nome,
+          valor:account.valor,
+          cor:"#"+Math.floor(Math.random()*16777215).toString(16)
+        }))
+
+        setFetcheData(mappAccountData)
+
+      }catch(err){
+        console.error("erro inesperado")
+      }
+    }
+  
+    async function loadData(){
+      const getCurrentUserId =  await getUser()
+      getCurrentUserId ? getUserAccounts(getCurrentUserId) : console.log("Nenhum usuario encontrado")    
+    }
+    loadData()
+  },[])
   
     useEffect(()=>{
       const total:number=Contas.reduce((sum,c)=>sum+c.valor,0);
@@ -53,7 +103,7 @@ export default function Main() {
         </Modal>
        <div className="p-5 w-full h-fit grid gri  d-cols-2 rounded-xl gap-5 h-2/4 bg-gray-900">
        <button onClick={()=>setModal(true)} className='col-span-2 w-1/4 h-20 mb-5 p-5 rounded-xl bg-white text-black'>Adicionar mais contas</button>
-         {Contas.map((c,index)=><Conta key={index} cor={c.cor} conta={c.conta} valor={c.valor}/>)}
+         {fetcheData.map((c,index)=><Conta id={index} cor={c.cor} conta={c.conta} valor={c.valor}/>)}
        </div>
       </>
     )

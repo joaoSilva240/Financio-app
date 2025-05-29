@@ -9,7 +9,6 @@ app.use(express.json());
 
 dotenv.config(); 
 
-
 const usersRoute = users; 
 
 app.use(express.json()); 
