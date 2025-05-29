@@ -1,9 +1,6 @@
 import { Plus } from 'lucide-react'
 
 
-
-
-
 type contaProps={
     id:number;
     conta:string;

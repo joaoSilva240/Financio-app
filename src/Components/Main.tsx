@@ -1,10 +1,8 @@
 import { useEffect, useState } from 'react'
-import supabase from '../../backend/supabaseClient'
+import supabase from '../../backend/supabaseClient.js'
 
 import Conta from './Conta';
 import Modal from './Modal';
-
-
 
 type EstruturaDaConta={
   conta:string;
@@ -23,7 +21,7 @@ export default function Main() {
     const [fetcheData, setFetcheData] = useState<EstruturaDaConta[]>([])
 
 
-  useEffect(()=>{
+    useEffect(()=>{
 
 
     async function getUser(): Promise<String | null> {
@@ -70,9 +68,9 @@ export default function Main() {
   },[])
   
     useEffect(()=>{
-      const total:number=Contas.reduce((sum,c)=>sum+c.valor,0);
+      const total:number=fetcheData.reduce((sum,c)=>sum+c.valor,0);
       setValorTotal(total);
-    },[Contas])
+    },[fetcheData])
     
     function handleAddConta(){
       if(!adicionarNomeContaNova || !adicionarValorContaNova) return
@@ -87,23 +85,23 @@ export default function Main() {
   
     return (
       <>
-        <h1 className="text-6xl font-thin">
+        <div className="m-5 p-10 w-full h-full border rounded-sm border-gray-600 border-1 text-6xl font-thin">
           R${ValorTotal}
-        </h1>
+        </div>
    
         <Modal isOpen={modal} onClose={() => setModal(false)}>
             <h2 className="text-3xl font-bold mb-4">Adicione os dados da conta</h2>
           <div className="grid grid-cols-3 gap-2">
             <p>Nome da conta</p>
             <input className=' col-span-2 h-10 pl-5 pr-5 border rounded-sm' type="text" name="conta" id="conta" placeholder='Adicione os dados da conta' value={adicionarNomeContaNova} onChange={(e)=>setAdicionarNomeContaNova(e.target.value)}/>
-            <p>Valor da conta</p>
+            <p>Valor da conta</p>simplifica
             <input className='h-10 col-span-2 pl-5 pr-5 border rounded-sm' type="number" name="valor" id="valor" placeholder='Adicione o saldo da conta'value={adicionarValorContaNova} onChange={(e)=>setAdicionarValorContaNova(parseFloat(e.target.value))}/>
             <button onClick={()=>handleAddConta()} className=' col-span-3 mb-5 p-3 border rounded-xl bg-white text-black'>Adicionar Conta</button>
           </div>
         </Modal>
        <div className="p-5 w-full h-fit grid gri  d-cols-2 rounded-xl gap-5 h-2/4 bg-gray-900">
        <button onClick={()=>setModal(true)} className='col-span-2 w-1/4 h-20 mb-5 p-5 rounded-xl bg-white text-black'>Adicionar mais contas</button>
-         {fetcheData.map((c,index)=><Conta id={index} cor={c.cor} conta={c.conta} valor={c.valor}/>)}
+         {fetcheData.map((c,index)=><Conta key={index} id={index} cor={c.cor} conta={c.conta} valor={c.valor}/>)}
        </div>
       </>
     )
