@@ -70,9 +70,9 @@ export default function Main() {
   },[])
   
     useEffect(()=>{
-      const total:number=Contas.reduce((sum,c)=>sum+c.valor,0);
+      const total:number=fetcheData.reduce((sum,c)=>sum+c.valor,0);
       setValorTotal(total);
-    },[Contas])
+    },[fetcheData])
     
     function handleAddConta(){
       if(!adicionarNomeContaNova || !adicionarValorContaNova) return
@@ -87,9 +87,9 @@ export default function Main() {
   
     return (
       <>
-        <h1 className="text-6xl font-thin">
+        <div className="m-5 p-10 w-full border rounded-sm border-gray-600-1 text-6xl font-thin">
           R${ValorTotal}
-        </h1>
+        </div>
    
         <Modal isOpen={modal} onClose={() => setModal(false)}>
             <h2 className="text-3xl font-bold mb-4">Adicione os dados da conta</h2>
